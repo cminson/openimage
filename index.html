@@ -1,0 +1,307 @@
+<?php
+include './zcommon/common.inc';
+
+if (array_key_exists('USERID', $_COOKIE)) {
+	$userid = $_COOKIE['USERID'];
+}
+
+include './zcommon/header.inc';
+include './zcommon/banner.inc';
+
+
+// Announce Area
+print "<div style=\"position:absolute; right: 0px; top: 0px; width: 100px; height: 50px; background-color: #3d3d3d; vertical-align: middle\">\n";
+print "<center>\n";
+print "<br>";
+print "<span style=\"color: white; font-size: 12px;\">Version 1.0</span>\n";
+print "<br>";
+print "<br>";
+print "</center>\n";
+print "</div>\n";
+
+if (array_key_exists('USERID', $_COOKIE)) {
+	$hid = $_COOKIE['USERID'];
+	//RecordCommand("SEEN _COOKIE $hid");
+} else {
+	$hid = "999";
+}
+
+print "<center>\n";
+
+
+//HOME IMAGE (LastLoaded)
+if (IsHandHeld() == FALSE)
+{
+print "<div style=\"position: fixed; top: 2px; left: 2px; width: 90px;\">\n";
+print "<img onclick=\"homeImage()\" id=\"homeimage\" height=\"50px\" src=\"$BASE_PATH/wimages/tools/trans.gif\" alt=\"\">\n";
+print "<p>\n";
+print "</div>\n";
+}
+// END HOME PAGE
+
+// hidden image load area - used by all op post call
+print "<iframe id=\"upload_target\" name=\"upload_target\" src=\"#\" style=\"width:0;height:0px;border:1px solid #fff; display: none\"></iframe>\n\n";
+
+// hidden submit form
+print "<form enctype=\"multipart/form-data\" id=\"LOADFORM\" action=\"./zpages/loadx.php\" method=\"post\" target=\"upload_target\">\n";
+print "<input type=hidden name=\"MAX_FILE_SIZE\" value=\"8000000\">\n";
+//print "<input type=hidden name=\"ID\" value=\"$DeviceId\">\n";
+//print "<input type=hidden name=\"PLATFORM\" value=\"$Platform\">\n";
+print "<div style=\"height:0px;overflow:hidden\">\n";
+print  "<input onchange=\"submitFile();\" size=\"90\" maxLength=\"200\" type=\"FILE\" id=\"SUBMITFILE\" name=\"FILENAME\">\n";
+print "</div>\n";
+print "</form>\n";
+
+print "<div id=\"shareContainer\"></div>\n";
+
+// START IMAGE AREA 
+print "<center>\n";
+print "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" class=\"imagearea\" id=\"imagearea\">\n";
+print "<tr>\n";		// first row, width enforcement
+print "<td>\n";
+print "<img width=\"100\" height=\"1\" src=\"$BASE_PATH/wimages/tools/whitepixel.jpg\" alt=\"\">\n";
+print "</td>\n";
+
+print "<td align=\"center\">\n";
+if (IsHandHeld() == TRUE)
+{
+print "Touch&Hold Image To Save";
+}
+else
+{
+print "<a class=\"oplink\" id=\"viewimage\" target=\"_blank\" onclick=\"viewCurrentImage()\" href=\"\">$X_VIEWIMAGE</a>";
+DisplaySep1();
+print "<a href=\"\" class=\"oplink\" id=\"downloadimage\" download>$X_DOWNLOAD</a>\n";
+
+
+print "<br>\n";
+print "<img width=\"400\" height=\"4\" src=\"$BASE_PATH/wimages/tools/whitepixel.jpg\" alt=\"\">\n";
+}
+print "</td>\n";
+
+print "<td>\n";
+print "<img width=\"100\" height=\"1\" src=\"$BASE_PATH/wimages/tools/whitepixel.jpg\" alt=\"\">\n";
+print "</td>\n";
+print "</tr>\n";
+
+
+print "<tr>\n";		// second row, image itself
+print "<td align=\"center\">\n";
+print "<img onclick=\"previousImage()\" width=\"40\" src=\"$BASE_PATH/wimages/arrows/nleft.jpg\" alt=\"\">\n";
+print "</td>\n";
+
+print "<td>\n";
+print "<center>";
+?>
+<img class="opimage" crossorigin="anonymous" id="opimage" onclick="getImageColorAtCurrentPoint(event)">
+<!--
+<img class="opimage" id="opimage" onload="imageReady()" onclick="getImageColorAtCurrentPoint(event)">
+-->
+<br>
+<span class="imagestatus" id="imagestatus"> </span>
+<p>
+<?php
+print "</center>";
+print "</td>\n";
+
+print "<td align=\"center\">\n";
+print "<img onclick=\"nextImage()\" width=\"40\" src=\"$BASE_PATH/wimages/arrows/nright.jpg\" alt=\"\">\n";
+print "</td>\n";
+print "</tr>\n";
+
+
+
+print "</table>\n";
+// END IMAGE AREA 
+print "<div id=\"share_container\"></div>\n";
+
+//
+// START LOAD BUTTONS
+// table of all load buttons:  web load, computer load, camera load
+print "<table style=\"margin-bottom: 1px; margin-top: 0px\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
+print "<tr>\n";
+print "<td>\n";
+print "<a href=\"#home\" onclick=\"chooseFile()\">\n";
+print "<img id=\"loadiconcomputer\" border=\"0\" src=\"$BASE_PATH/wimages/icons/LoadIconBig-Computer.png\" alt=\"\"></a>\n";
+print "</td>\n";
+
+print "<td><img width=\"29\" height=\"1\" src=\"$BASE_PATH/wimages/tools/whitepixel.jpg\" alt=\"\"></td>\n";
+
+print "<td>\n";
+print "<a href=\"#home\" onclick=\"toggleLoadDisplay()\">\n";
+print "<img id=\"loadiconglobe\" border=\"0\" src=\"$BASE_PATH/wimages/icons/LoadIconBig-Globe.png\" alt=\"\"></a>\n";
+print "</td>\n";
+
+
+if (IsHandHeld() == FALSE)
+{
+print "<td><img width=\"29\" height=\"1\" src=\"$BASE_PATH/wimages/tools/whitepixel.jpg\" alt=\"\"></td>\n";
+print "<td>\n";
+print "<a href=\"#home\" onclick=\"toggleWebcamDisplay()\">\n";
+print "<img id=\"loadiconcamera\" border=\"0\" src=\"$BASE_PATH/wimages/icons/LoadIconBig-Camera.png\" alt=\"\"></a>\n";
+print "</td>\n";
+}
+
+
+print "</tr>\n";
+
+
+
+
+print "</table>\n";
+//
+// END LOAD BUTTONS
+//
+
+print "<span id=\"statusReport\"></span>\n";
+
+print "<br><img width=\"750\" height=\"1\" src=\"$BASE_PATH/wimages/tools/whitepixel.jpg\" alt=\"\">\n";
+print "\n\n\n";
+
+
+print "<center>\n";
+print "<br><img width=\"750\" height=\"1\" src=\"$BASE_PATH/wimages/tools/whitepixel.jpg\" alt=\"\">\n";
+print "\n\n\n";
+print "<center>\n";print "<div style=\"text-align: center; display: none\" id=\"returntomainpage\">\n";
+$return = "&larr;&nbsp;$X_RETURNTOMAINPAGE";
+print "<A class=\"mainpagereturnlink\" HREF=\"#home\" onclick=returnToMainArea()>$return</A>\n";
+print "</div>\n";
+print "</center>\n";
+
+/*
+print "<center>\n";
+print "<p><br>\n";
+print "<div style=\"display: none\" id=\"returntomainpage\">\n";
+$return = "&larr;&nbsp;$X_RETURNTOMAINPAGE";
+print "<A class=\"mainpagereturnlink\" HREF=\"#home\" onclick=returnToMainArea()>$return</A>\n";
+print "<p><br>\n";
+print "</div>\n";
+print "</center>\n";
+*/
+
+
+//
+// START MAINCONTAINER
+// Main container contains:
+//		1) Hidden load area
+//		2) A main slider - which contains:
+//			a) An ops toc area
+//			b) An ops form area
+//
+print "<div style=\"margin-top: 0px\" id=\"maincontainer\">\n";
+
+// BEGIN  hidden load area (for web image loads)
+print  "<div class=\"loadimage\" id=\"loadarea\">\n";
+DisplayLoadReturn();
+DisplayLoadTitle($X_LOADIMAGE);
+print  "<form enctype=\"multipart/form-data\" action=\"./zpages/loadx.php\" method=\"post\" target=\"upload_target\">\n";
+print  "<input type=hidden name=\"MAX_FILE_SIZE\" value=\"8000000\">\n";
+//print  "<input type=hidden name=\"ID\" value=\"$DeviceID\">\n";
+//print  "<input type=hidden name=\"PLATFORM\" value=\"$Platform\">\n";
+
+print "<p><br>\n";
+print "$X_FROMWEB<BR>";
+print "<INPUT size=90 id=\"URL_IMAGE\" maxLength=200 type=\"TEXT\" name=\"URL\">";
+
+print  "<p><br>\n";
+print  "<input onClick=\"executeLoad()\" type=\"submit\" value=\"$X_LOADIMAGE\"> &nbsp; &nbsp;\n";
+print "<INPUT type=\"reset\" value=\"$X_CLEAR\">\n";
+print  "</form>\n";
+print "</div>\n";
+// END hidden load area (for web image loads)
+
+// this is where camera images are displayed and stored
+print "<div style=\"display: none;\" id=\"webcam1\">\n";
+print "<button style=\"background-color: #90ee90; width: 250px; height: 20px\" id=\"snap\" onclick=\"takeHTML5Photo()\">$X_WEBCAM</button>";
+print "<br><p>\n";
+print "<video id=\"video\" width=\"640\" height=\"480\" autoplay></video>\n";
+print "<br><p>\n";
+print "<script language=\"JavaScript\" type=\"text/javascript\">\n";
+print "</script>\n";
+print "</div>\n";
+
+print "\n\n";
+print "<div style=\"margin-top: 0px\" id=\"mainslider\">\n";	// START Main Slider
+
+
+// START OP TOC
+print "<div class=\"oparea\" id=\"optoc\">\n"; 
+print "<table cellspacing=\"7\" cellpadding=\"7\">\n";
+print "<tr>\n";
+
+print "<td valign=\"top\" align=center>\n";
+include "./zpages/ops1.php"; 
+print "</td>\n";
+
+print "<td valign=\"top\"><img width=1 height=580 src=\"$BASE_PATH/wimages/tools/graypixel.jpg\" alt=\"\"> </td>\n";
+print "<td valign=top align=center>\n";
+include "./zpages/ops2.php"; 
+print "</td>\n";
+
+print "<td valign=\"top\"><img width=1 height=580 src=\"$BASE_PATH/wimages/tools/graypixel.jpg\" alt=\"\"> </td>\n";
+print "<td valign=top align=center>\n";
+include "./zpages/ops3.php"; 
+print "</td>\n";
+
+print "<td valign=\"top\"><img width=1 height=580 src=\"$BASE_PATH/wimages/tools/graypixel.jpg\" alt=\"\"> </td>\n";
+print "<td valign=\"top\" align=center>\n";
+include "./zpages/ops4.php"; 
+print "</td>\n";
+
+//print "<td valign=\"top\"><img width=1 height=880 src=\"$BASE_PATH/wimages/tools/whitepixel.jpg\" alt=\"\"> </td>\n";
+
+print "</tr>\n";
+print "</table>\n";
+
+print "<p><br>\n";
+if (IsHandHeld() == FALSE)
+{
+print "<img width=\"700\" height=\"1\" src=\"$BASE_PATH/wimages/tools/graypixel.jpg\" alt=\"\">\n";
+print "<p>\n";
+//print "<A class=faq target=\"_blank\" href=\"$BASE_PATH/zs/faq.html\">FAQ</A>";
+print "&nbsp;&nbsp\n";
+//print "&#8226;";
+print "&nbsp;&nbsp\n";
+}
+
+print "<br><p><br>";
+
+print "<p><br><p><br><p>\n";
+print "<P class=\"mild1\"> &#169 2023  christopher minson  llc\n"; 
+print "<p><br><p><br><p>\n";
+
+
+
+print "</div>\n";
+// END OP TOC
+
+// START OP AREA
+print "<div class=\"oparea\" id=\"opform\">\n"; 
+
+print "</div>\n";
+// END OP AREA
+
+
+print "</div>\n";	// END MAIN SLIDER
+print "</div>\n";	// END MAIN DIV
+
+//
+// This is where images are stored for hit testing
+// Used by Transparency
+//
+print "<canvas id=\"hiddenImage\" width=\"1000\" height=\"1000\" style=\"display:none\"></canvas>\n";
+
+//
+// This is where HTML5 camera images are stored
+//
+//print "<canvas id=\"cameracanvas\" width=\"640\" height=\"480\"></canvas>\n";
+print "<canvas id=\"cameracanvas\" width=\"640\" height=\"480\" style=\"display:none\"></canvas>\n";
+
+
+
+print "</center>\n";
+print "</center>\n";
+print "</body>\n";
+print "</html>\n";
+
+?>
