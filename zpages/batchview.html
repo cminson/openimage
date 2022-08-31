@@ -1,0 +1,49 @@
+<?php
+include '../zcommon/common.inc';
+include '../zcommon/header.inc';
+include '../zcommon/banner.inc';
+
+$current = $_GET['CURRENTFILE'];
+$inputFileDir = "$BASE_DIR$current";
+
+
+DisplayCurrentImage($current);
+
+$base = StripSuffix($current);
+$base = substr($base,0,-2);
+
+$pre0 = "ezimba0";
+$pre1 = "ezimba1";
+$base = str_replace("$pre1", "XX", $base);
+$base = str_replace("$pre0", "XX", $base);
+list($path,$n) = explode('XX',$base);
+/*
+	print $base;
+	print "<br>";
+	print $current;
+	print "<br>";
+	print $n;
+	print "<br>";
+*/
+$PREFIXCODE =  ((isset($_COOKIE["PREFIXCODE"])) == FALSE)
+        ? "1" : $_COOKIE["PREFIXCODE"];
+
+
+for ($i=1; $i<16; $i++)
+{
+	$n++;
+	$file = "$PREFIXCODE".$n.".gif";
+	$basepath = $BASE_DIR.$path.$file;
+	if ((file_exists($basepath)) == FALSE)
+		break;
+    $outputFilePath = "$path$file";
+	//print $outputFilePath;
+	print "<br>";
+	print "<img src=$outputFilePath>\n";
+}
+
+
+
+?>
+</body>
+</html>

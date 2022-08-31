@@ -1,0 +1,189 @@
+<?php
+include "../zcommon/common.inc";
+include "../zcommon/header.inc";
+include "../zcommon/banner.inc";
+
+$HISTORYJS = <<< EOD
+<script type="text/javascript">
+function deleteImage(id,userid,datecode,image)
+{
+	//alert(id);
+
+	hide(id);
+	var param = "ID="+id+"&USERID="+userid+"&DATECODE="+datecode+"&IMAGE="+image;
+    var http = getajaxRequest();
+    http.open("POST","./deleteImage.php");
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.send(param);
+}
+</script>
+EOD;
+
+print $HISTORYJS;
+
+
+$Title = $X_HISTORY;
+
+$ArgDate = $_GET['DATE'];
+$ArgType = $_GET['TYPE'];
+$ArgUserId = $_GET['HID'];
+
+if (isset($ArgDate) == FALSE)
+	$ArgDate = 1;
+if (isset($ArgType) == FALSE)
+	$ArgType = 'LOADED';
+if (isset($ArgUserId) == FALSE)
+    $ArgUserId = $_COOKIE['USERID'];
+$ArgUserId=trim($ArgUserId);
+
+print "<center>\n";
+DisplayTitle($Title);
+print  "<form enctype=\"multipart/form-data\" method=\"GET\">\n";
+print $X_DAYS;
+DisplaySep0();
+
+print "<select NAME=\"DATE\">\n";
+if ($ArgDate == 1)
+	print "<option VALUE=1 SELECTED>1\n";
+else
+	print "<option VALUE=1>1\n";
+if ($ArgDate == 2)
+	print "<option VALUE=2 SELECTED>2\n";
+else
+	print "<option VALUE=2>2\n";
+if ($ArgDate == 7)
+	print "<option VALUE=7 SELECTED>7\n";
+else
+	print "<option VALUE=7>7\n";
+if ($ArgDate == 14)
+	print "<option VALUE=14 SELECTED>14\n";
+else
+	print "<option VALUE=14>14\n";
+if ($ArgDate == 30)
+	print "<option VALUE=30 SELECTED>30\n";
+else
+	print "<option VALUE=30>30\n";
+if ($ArgDate == 60)
+	print "<option VALUE=60 SELECTED>60\n";
+else
+	print "<option VALUE=60>60\n";
+if ($ArgDate == 90)
+	print "<option VALUE=90 SELECTED>90\n";
+else
+	print "<option VALUE=90>90\n";
+
+print "</select>\n";
+
+print "&nbsp;&nbsp;&nbsp;\n";
+print "&nbsp;&nbsp;&nbsp;\n";
+print "Type&nbsp;\n";
+print "<select NAME=\"TYPE\">\n";
+if ($ArgType == "ALL")
+{
+	print "<option VALUE=ALL SELECTED>All Images\n";
+	print "<option VALUE=LOADED >Original Images\n";
+}
+else
+{
+	print "<option VALUE=ALL>All Images\n";
+	print "<option VALUE=LOADED SELECTED>Original Images\n";
+}
+print "</select>\n";
+
+RecordCommand("$ArgUserId");
+print "&nbsp;&nbsp;&nbsp;\n";
+print "&nbsp;&nbsp;&nbsp;\n";
+print "<input type=submit value=\"$X_SELECTED\"> &nbsp; &nbsp\n";
+print "<input type=\"hidden\" name=\"HID\" value=\"$ArgUserId\">\n\n";
+
+
+print "<br><p><br><p>\n";
+DisplayHistory();
+print ("</form>\n");
+print "</body></html>\n";
+
+
+
+
+function DisplayHistory()
+{
+global $CONVERT_PATH;
+global $ArgUserId;
+global $ArgDate;
+global $ArgType;
+global $current;
+global $BASE_PATH;
+
+	$path = "$BASE_PATH/work/XXCODEC/";
+
+    $time = time();
+	$time -= ($ArgDate*24*60*60);
+    $datecode = date("ymd",$time);
+
+	$con = mysqli_connect('localhost',"cminson","ireland","mydb");
+	//@mysql_select_db("mydb") or die( "Unable to select database");
+    $query = "SELECT * from opstrack where userid='$ArgUserId' AND datecode >= '$datecode' ORDER BY created DESC;";
+
+	$mod =  (($ArgType == 'ALL') ? "" : " AND (op = 'XLOADC' OR op = 'XLOADF' OR op = 'XLOADW')");
+	
+    $query = "SELECT * from opstrack where userid='$ArgUserId' AND datecode >= '$datecode' AND op != 'SESSIONSTART' $mod ORDER BY created DESC;";
+	RecordCommand("XHISTORY: $ArgType $query");
+	//print $query;
+	$results = mysqli_query($con, $query);
+
+	print "<center>\n";
+    print "<table class=\"selections\" cellspacing=10 cellpadding=10>\n";
+    $i = 0;    
+	$col = 1;
+	$count = 0;
+
+	while ($result = mysqli_fetch_array($results))
+	{
+	    $image = $result['image'];
+		if (strlen($image) < 2) continue;
+	    $datecode = $result['datecode'];
+	    $op = $result['op'];
+		$created = $result['created'];
+		$userid = $result['userid'];
+
+		$imagePath = str_replace('XXCODE',$datecode,$path);
+		$imagePath = "$imagePath$image";
+
+        if ($col == 1)
+        {
+            print "<tr>\n";
+        }
+        print "<td align=center>\n";
+		$id = "HISTORY$count";
+		print "<div id=\"$id\">\n";
+        //print "<a target=_blank href=\"$imagePath\"><img src=\"$imagePath\" width=\"50\" height=\"50\" alt=\"\"></a>\n";
+        print "<a href=\"$imagePath\"><img src=\"$imagePath\" width=\"50\" height=\"50\" alt=\"\"></a>\n";
+		print "<br>\n";
+		print $created;
+		print "<br>\n";
+		print "<img onclick=\"deleteImage('$id','$userid','$datecode','$image')\" width=\"10\" src=\"../wimages/tools/delicon1.png\">\n";
+
+        print "</div>\n";
+        print "</td>\n";
+
+        if ($col == 8)
+        {
+            print "</tr>\n";
+            $col = 0;
+        }
+        $col++;
+		$count++;
+
+	}
+
+	print "</table>";
+	print "</center>\n";
+
+    mysqli_close($con);
+	RecordCommand("XHISTORY FINAL $current $ArgUserId");
+
+}
+
+
+
+?>

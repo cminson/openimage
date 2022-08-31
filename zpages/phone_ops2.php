@@ -1,0 +1,35 @@
+<?php
+print "<div id=\"phoneops2\">\n";
+print "<table class=\"ops\" cellpadding=\"0\" cellspacing=\"10\">\n";
+DisplayPhoneOp("$X_ORIENT","$X_ROTATE","rotate.php","");
+DisplayPhoneOp("$X_ORIENT","$X_INSTANTROTATE","simplex.php","ROTATEUP");
+DisplayPhoneOp("$X_ORIENT","$X_FLIPVERTICALLY","simplex.php","FLIP");
+DisplayPhoneOp("$X_ORIENT","$X_FLIPHORIZONTALLY","simplex.php","FLOP");
+DisplayPhoneOp("$X_ORIENT","$X_SKEW","skew.php","");
+DisplayPhoneOp("$X_CUT","$X_CROP", "crop.php","");
+DisplayPhoneOp("$X_CUT","$X_VIGNETTE","simplex.php","VIGNETTE");
+DisplayPhoneOp("$X_CUT","$X_SHAVE","shave.php","");
+DisplayPhoneOp("$X_CUT","$X_TRIM","trim.php","");
+DisplayPhoneOp("$X_BORDER","$X_COLOR","border.php","");
+DisplayPhoneOp("$X_BORDER","$X_PEARL","pearlborder.php","");
+DisplayPhoneOp("$X_BORDER","$X_GLITTER","glitterborder.php","");
+DisplayPhoneOp("$X_BORDER","$X_ARTFRAME","artframe.php","");
+DisplayPhoneOp("$X_BORDER","$X_BLENDFRAME","imageborder.php","");
+DisplayPhoneOp("$X_BORDER","$X_GEOMETRIC","geoborder.php","");
+DisplayPhoneOp("$X_BORDER","$X_EDGE","edge.php","");
+DisplayPhoneOp("$X_BORDER","$X_BUTTON","button.php","");
+DisplayPhoneOp("$X_LABEL","$X_BORDERTEXT","label.php","");
+DisplayPhoneOp("$X_LABEL","$X_STAMPTEXT","stamp.php","");
+DisplayPhoneOp("$X_LABEL","$X_GLITTERTEXT","glittertext.php","");
+DisplayPhoneOp("$X_LABEL","$X_STENCIL","stencil.php","");
+DisplayPhoneOp("$X_LABEL","3D","3DLabel.php","");
+DisplayPhoneOp("$X_LABEL","$X_WATERMARK","water.php","");
+DisplayPhoneOp("$X_LABEL","$X_POSTER","poster.php","");
+DisplayPhoneOp("$X_RESIZE","$X_RESIZEPERCENT","sizepercent.php","");
+DisplayPhoneOp("$X_RESIZE","$X_RESIZEPIXELS","sizepixels.php","");
+DisplayPhoneOp("$X_RESIZE","$X_THUMBNAIL","simplex.php","THUMBNAIL");
+DisplayPhoneOp("$X_FILEKBSIZE","$X_REDUCE","reduce.php","");
+DisplayPhoneOp("$X_FILEKBSIZE","$X_INSTANTREDUCE","instantreducex.php","NA");
+print "</table>\n";
+print "</div>\n";
+?>

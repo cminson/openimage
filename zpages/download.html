@@ -1,0 +1,37 @@
+<?php
+include '/home/httpd/vhosts/ezimba/httpdocs/zcommon/common.inc';
+
+$file = $_GET['CURRENTFILE'];
+$ip = $_SERVER['REMOTE_ADDR'];
+
+if ($ip == "31.205.30.248") return;
+$inputFileDir = "$BASE_DIR$file";
+GetImageAttributes($inputFileDir,$width,$height,$size);
+RecordCommand("XDOWNLOAD $inputFileDir $size");
+
+if (stristr($file,"work") == FALSE)
+	exit;
+if ((stristr($file,"png") != FALSE) ||
+(stristr($file,"gif") != FALSE) ||
+(stristr($file,"jpg") != FALSE) ||
+(stristr($file,"bmp") != FALSE) ||
+(stristr($file,"ico") != FALSE))
+{
+    $base = $BASE_DIR;
+    $src = "$base$file";
+    $ext = pathinfo($file, PATHINFO_EXTENSION);
+
+    $destfile = "ezimba".".$ext";
+    $destbase = "$BASE_DIR/zpages/";
+    $dest = "$destbase$destfile";
+    copy($src,$dest);
+    RecordCommand("XDOWNLOAD $src $dest");
+
+    $src = $destfile;
+    header('Content-type: octet/stream');
+    header('Content-disposition: attachment; filename='.$src.';');
+    header('Content-Length: '.filesize($src));
+    readfile($src);
+}
+exit;
+?>

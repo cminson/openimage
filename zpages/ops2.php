@@ -1,0 +1,35 @@
+<?php
+print "<table class=\"ops\" cellpadding=\"0\" cellspacing=\"0\">\n";
+print "<caption class=\"ops\" align=top>$X_EDIT </caption>";
+DisplayOp("$X_ROTATE","$X_ORIENT","$X_ROTATE","rotate.php","");
+DisplayOp("$X_INSTANTROTATE","","$X_INSTANTROTATE","simplex.php","ROTATEUP");
+DisplayOp("$X_FLIPVERTICALLY","","$X_FLIPVERTICALLY","simplex.php","FLIP");
+DisplayOp("$X_FLIPHORIZONTALLY","","$X_FLIPHORIZONTALLY","simplex.php","FLOP");
+DisplayOp("$X_SKEW","","$X_SKEW","skew.php","");
+DisplayOp("$X_RECTANGULAR","$X_CUT","$X_CROP", "ncrop.php","");
+DisplayOp("$X_VIGNETTE","","$X_VIGNETTE","simplex.php","VIGNETTE");
+DisplayOp("$X_SHAVE","","$X_SHAVE","shave.php","");
+DisplayOp("$X_TRIM","","$X_TRIM","trim.php","");
+DisplayOp("$X_BORDER","$X_BORDER","$X_COLOR","border.php","");
+DisplayOp("$X_PEARL","","$X_PEARL","pearlborder.php","");
+DisplayOp("$X_GLITTER","","$X_GLITTER","glitterborder.php","");
+DisplayOp("$X_ARTFRAME ","","$X_ARTFRAME","artframe.php","");
+DisplayOp("$X_BLENDFRAME ","","$X_BLENDFRAME","imageborder.php","");
+DisplayOp("$X_GEOMETRIC ","","$X_GEOMETRIC","geoborder.php","");
+DisplayOp("$X_EDGE","","$X_EDGE","edge.php","");
+DisplayOp("$X_BUTTON","","$X_BUTTON","button.php","");
+DisplayOp("$X_LABEL","$X_LABEL","$X_BORDERTEXT","label.php","");
+DisplayOp("$X_STAMPTEXT","","$X_STAMPTEXT","stamp.php","");
+DisplayOp("$X_GLITTERTEXT","","$X_GLITTERTEXT","glittertext.php","");
+//DisplayOp("$X_STENCIL","","$X_STENCIL","stencil.php","");
+DisplayOp("3D","","3D","3DLabel.php","");
+DisplayOp("$X_WATERMARK","","$X_WATERMARK","water.php","");
+DisplayOp("$X_POSTER","","$X_POSTER","poster.php","");
+DisplayOp("$X_RESIZE","$X_RESIZE","$X_RESIZEPERCENT","sizepercent.php","");
+DisplayOp("$X_RESIZEPIXELS","","$X_RESIZEPIXELS","sizepixels.php","");
+DisplayOp("$X_THUMBNAIL","","$X_THUMBNAIL","simplex.php","THUMBNAIL");
+DisplayOp("$X_REDUCEFILESIZE","$X_FILEKBSIZE","$X_REDUCE","reduce.php","");
+DisplayOp("$X_INSTANTREDUCE","","$X_INSTANTREDUCE","instantreducex.php","NA");
+print "<tr><td></td></tr>\n";
+print "</table>\n";
+?>

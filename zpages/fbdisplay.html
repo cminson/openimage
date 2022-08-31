@@ -1,0 +1,19 @@
+<?php
+include '../zcommon/common.inc';
+include '../zcommon/header.inc';
+include '../zcommon/banner.inc';
+
+$Title = "$SITE";
+print "<center>\n";
+$current = $_GET['CURRENTFILE'];
+$current = rawurldecode($current);
+RecordCommand("FBDisplay $current");
+//DisplayTitle($Title);
+DisplayLineSep0();
+DisplayLineSep0();
+DisplayMainReturn();
+DisplayLineSep0();
+DisplayLineSep0();
+DisplayCurrentImage($current);
+print "</center>\n";
+?>
