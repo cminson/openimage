@@ -1,0 +1,32 @@
+convert -size 200x50 xc:'#ff8c00' blankOn.png
+convert -size 200x50 xc:'#995400' blankOff.png
+#
+convert -background transparent -fill black  -font ../fonts/arial.ttf  -pointsize 38 label:convert label1.png 
+convert -background transparent -fill black  -font ../fonts/arial.ttf  -pointsize 38 label:edit label2.png 
+convert -background transparent -fill black  -font ../fonts/arial.ttf  -pointsize 38 label:mix label3.png 
+convert -background transparent -fill black  -font ../fonts/arial.ttf  -pointsize 38 label:create label4.png 
+#
+composite -gravity center label1.png blankOn.png tlabelOnConvert.png
+composite -gravity center label1.png blankOff.png tlabelOffConvert.png
+#
+composite -gravity center label2.png blankOn.png tlabelOnEdit.png
+composite -gravity center label2.png blankOff.png tlabelOffEdit.png
+#
+composite -gravity center label3.png blankOn.png tlabelOnMix.png
+composite -gravity center label3.png blankOff.png tlabelOffMix.png
+#
+composite -gravity center label4.png blankOn.png tlabelOnCreate.png
+composite -gravity center label4.png blankOff.png tlabelOffCreate.png
+#
+#
+#
+convert -rotate 90  tlabelOnConvert.png labelOnConvert.png
+convert -rotate 90  tlabelOffConvert.png labelOffConvert.png
+convert -rotate 90  tlabelOnEdit.png labelOnEdit.png
+convert -rotate 90  tlabelOffEdit.png labelOffEdit.png
+convert -rotate 90  tlabelOnMix.png labelOnMix.png
+convert -rotate 90  tlabelOffMix.png labelOffMix.png
+convert -rotate 90  tlabelOnCreate.png labelOnCreate.png
+convert -rotate 90  tlabelOffCreate.png labelOffCreate.png
+
+

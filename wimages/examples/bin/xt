@@ -1,0 +1,33 @@
+#!/usr/bin/php
+<?php
+
+include '/home/httpd/vhosts/iaza.com/httpdocs/xcommon/xcommon.inc';
+
+$file = $argv[1];
+
+$images = GetAnimatedImages("./$file");
+$AnimList = "";
+$path = "/home/httpd/vhosts/iaza.com/httpdocs/wimages/examples/groovy/";
+foreach ($images as $image)
+{
+	$inputFileDir = "$path$image";
+	$inputFileDir = $image;
+	$target = TMPGIF();
+	$out = "/home/httpd/vhosts/iaza.com/httpdocs/wimages/tmp/$target";
+	$command = "convert -crop 150x140+0+0 +repage $inputFileDir $out";
+    $execResult = exec("$command 2>&1", $lines, $ConvertResultCode);
+	print $command;
+	$AnimList .= "$out ";
+	print "\n";
+}
+//now re-animate the morphed images
+$outputFileDir = "./out.gif";
+$command = "convert -dispose previous -delay 25 $AnimList -loop 0 $outputFileDir";
+$execResult = exec("$command 2>&1", $lines, $ConvertResultCode);
+print $command;
+
+
+
+
+?>
+

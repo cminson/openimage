@@ -1,0 +1,7 @@
+convert -rotate 90 jigsaw5.png jigsaw6.png
+convert -rotate 180 jigsaw5.png jigsaw7.png
+convert -rotate 270 jigsaw5.png jigsaw8.png
+cp jigsaw5-A.png jigsaw6-A.png
+cp jigsaw5-A.png jigsaw7-A.png
+cp jigsaw5-A.png jigsaw8-A.png
+

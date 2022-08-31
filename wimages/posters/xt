@@ -1,0 +1,12 @@
+convert -crop 750x465+0+0 motlandsingle.jpg t.jpg
+cp t.jpg motlandsingle.jpg
+convert -crop 750x465+0+0 motlanddouble.jpg t.jpg
+cp t.jpg motlanddouble.jpg
+convert -crop 750x465+0+0 motlandfancy.jpg t.jpg
+cp t.jpg motlandfancy.jpg
+convert -crop 600x700+0+0 motportdouble.jpg t.jpg
+cp t.jpg motportdouble.jpg
+convert -crop 600x700+0+0 motportfancy.jpg t.jpg
+cp t.jpg motportfancy.jpg
+convert -crop 600x610+0+0 motportsingle.jpg t.jpg
+cp t.jpg motportsingle.jpg

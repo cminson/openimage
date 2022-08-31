@@ -1,0 +1,9 @@
+convert big-square-A.gif big-square-A.png
+convert circle-A.gif circle-A.png
+convert rectangle1-A.gif rectangle1-A.png
+convert rectangle2-A.gif rectangle2-A.png
+convert small-square-A.gif small-square-A.png
+convert square-A.gif square-A.png
+convert triangle-down-A.gif triangle-down-A.png
+convert triangle-right-A.gif triangle-right-A.png
+convert very-small-square-A.gif very-small-square-A.png
